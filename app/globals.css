@@ -1,0 +1,211 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --void-bg: #050508;
+  --void-violet: #8B5CF6;
+  --void-cyan: #22D3EE;
+  --void-rose: #FB7185;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  background: var(--void-bg);
+  color: #ffffff;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  scroll-behavior: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-inter), sans-serif;
+  font-feature-settings: "ss01", "ss02";
+}
+
+/* Hide system cursor on desktop where custom cursor is visible */
+@media (hover: hover) and (pointer: fine) {
+  html,
+  body,
+  * {
+    cursor: none !important;
+  }
+}
+
+::selection {
+  background: rgba(139, 92, 246, 0.35);
+  color: #ffffff;
+}
+
+/* Lenis smooth scroll required styles */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+/* Glass card */
+.glass {
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.02) 0%,
+    rgba(255, 255, 255, 0.005) 100%
+  );
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.04),
+    0 0 60px rgba(139, 92, 246, 0.05);
+}
+
+/* Splitting.js baseline */
+.char {
+  display: inline-block;
+  will-change: transform, opacity;
+}
+
+/* Utility: halftone dot overlay */
+.halftone {
+  background-image: radial-gradient(
+    rgba(255, 255, 255, 0.08) 1px,
+    transparent 1px
+  );
+  background-size: 4px 4px;
+}
+
+/* Scroll indicator pulse */
+@keyframes void-pulse {
+  0%, 100% { opacity: 0.3; transform: translateY(0); }
+  50% { opacity: 1; transform: translateY(6px); }
+}
+.scroll-indicator-dot {
+  animation: void-pulse 2s ease-in-out infinite;
+}
+
+/* Typewriter caret */
+@keyframes caret-blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+.caret {
+  display: inline-block;
+  width: 2px;
+  background: #fff;
+  margin-left: 4px;
+  animation: caret-blink 1s step-end infinite;
+}
+
+/* Flower bloom animation */
+@keyframes bloom {
+  0% { opacity: 0; transform: scale(0) rotate(-30deg); }
+  60% { opacity: 1; transform: scale(1.15) rotate(5deg); }
+  100% { opacity: 1; transform: scale(1) rotate(0deg); }
+}
+@keyframes sway {
+  0% { transform: scale(1) rotate(-3deg); }
+  100% { transform: scale(1.05) rotate(3deg); }
+}
+@keyframes float-particle {
+  0%, 100% { opacity: 0; transform: translateY(0); }
+  30% { opacity: 0.6; }
+  50% { opacity: 0.8; transform: translateY(-20px); }
+  70% { opacity: 0.6; }
+}
+
+/* ── Butterfly animation system ──
+   Wings use rotateY for perspective flap from the body hinge.
+   Left/right have mirrored scaleX so the same rotateY works symmetrically.
+   Lower wings have a phase-offset animation for organic feel.
+   Only transform + opacity are animated → GPU composited, 60 fps. */
+
+@keyframes bf-flap-l {
+  0%   { transform: scaleX(1)   rotateY(0deg); }
+  50%  { transform: scaleX(0.3) rotateY(55deg); }
+  100% { transform: scaleX(1)   rotateY(0deg); }
+}
+@keyframes bf-flap-r {
+  0%   { transform: scaleX(1)   rotateY(0deg); }
+  50%  { transform: scaleX(0.3) rotateY(-55deg); }
+  100% { transform: scaleX(1)   rotateY(0deg); }
+}
+/* Lower wings have slightly more fold for realism */
+@keyframes bf-flap-lower {
+  0%   { transform: scaleX(1)   rotateY(0deg); }
+  50%  { transform: scaleX(0.35) rotateY(45deg); }
+  100% { transform: scaleX(1)   rotateY(0deg); }
+}
+/* Gentle floating drift — the whole butterfly */
+@keyframes bf-float {
+  0%   { transform: translate(0, 0) rotate(0deg); }
+  25%  { transform: translate(6px, -10px) rotate(1.5deg); }
+  50%  { transform: translate(-4px, -16px) rotate(-1deg); }
+  75%  { transform: translate(8px, -6px) rotate(2deg); }
+  100% { transform: translate(0, 0) rotate(0deg); }
+}
+/* Body/antennae micro-bob */
+@keyframes bf-bob {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50%      { transform: translateY(-2px) rotate(1deg); }
+}
+/* Sparkle particles around the butterfly */
+@keyframes bf-sparkle {
+  0%   { opacity: 0; transform: scale(0.5) translateY(0); }
+  20%  { opacity: 0.9; transform: scale(1.2) translateY(-4px); }
+  50%  { opacity: 0.6; transform: scale(0.8) translateY(-8px); }
+  80%  { opacity: 0.3; transform: scale(1) translateY(-2px); }
+  100% { opacity: 0; transform: scale(0.5) translateY(0); }
+}
+
+/* Nebula cloud drift */
+@keyframes nebula-drift {
+  0% { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(30px, -20px) scale(1.15); }
+}
+
+/* Blob slow spin — CSS only, no JS re-renders */
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Preloader */
+@keyframes preloader-wipe {
+  0% { clip-path: inset(0 0 0 0); }
+  100% { clip-path: inset(0 0 0 100%); }
+}
+@keyframes preloader-text-in {
+  0% { opacity: 0; transform: translateY(30px); filter: blur(6px); }
+  40% { opacity: 1; transform: translateY(0); filter: blur(0); }
+  70% { opacity: 1; transform: translateY(0); filter: blur(0); }
+  100% { opacity: 0; transform: translateY(-20px); filter: blur(4px); }
+}
+@keyframes preloader-count {
+  0% { transform: scaleX(0); }
+  100% { transform: scaleX(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
